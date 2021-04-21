@@ -4,8 +4,9 @@
   "description": "",
   "main": "www/index.js",
   "scripts": {
-    "start": "cross-env PORT=3003 node .",
-    "dev": "cross-env PORT=3003 NODE_ENV=development nodemon",
+    "start:docker": "node .",
+    "start": "cross-env NODE_ENV=production node .",
+    "dev": "cross-env EUREKA_DISABLE=1 NODE_ENV=development nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
