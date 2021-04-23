@@ -81,6 +81,5 @@ jobs:
         PORT: ${{ secrets.SSH_PORT }}
         script: |
           cd /opt/04-nike/iam-service
-          docker rmi 
           echo IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/iam-service:${{ steps.vars.outputs.tag }} > .env
           docker-compose up -d
