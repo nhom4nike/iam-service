@@ -1,5 +1,5 @@
 const express = require('express')
-const { body, validationResult } = require('express-validator')
+const { body, validationResult, query } = require('express-validator')
 const { resource: handler } = require('../../controllers')
 
 const {
@@ -11,22 +11,22 @@ const router = express.Router()
 
 router.post(
   '/authorization',
-  body('userId')
+  query('userId')
     .exists({ checkFalsy: true, checkNull: true })
     .withMessage(reqCodes.missing_param)
     .isString()
     .withMessage(reqCodes.type_mismatch)
     .trim(),
-  body('resourceId')
+    query('resourceId')
     .exists()
     .withMessage(reqCodes.missing_param)
     .isString()
     .withMessage(reqCodes.type_mismatch)
     .trim(),
-    body('operations')
+    query('operations')
     .exists()
     .withMessage(reqCodes.missing_param)
-    .isArray()
+    .isString()
     .withMessage(reqCodes.type_mismatch),
   async (req, res, next) => {
     try{
@@ -35,8 +35,8 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ error: format(errors) })
     }
-     const { userId, resourceId, operations} = req.body
-    const isAuthorized = await handler.checkIsAuthorized({userId, resourceId, operations })
+     const { userId, resourceId, operations} = req.query
+    const isAuthorized = await handler.checkIsAuthorized({userId, resourceId, operations: operations.split(',') })
     if(!isAuthorized){
       return res.status(403).json({ error: "Dont have permission" })
     }
