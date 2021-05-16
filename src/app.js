@@ -18,6 +18,7 @@ module.exports = {
 
     // setup express server
     const server = express()
+    server.use(express.static('public'))
     server.use(json())
     server.use(cookieParser())
     server.use(helmet())
